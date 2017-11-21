@@ -17,6 +17,7 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     // なぜか error は空オブジェクト
+    // ApplicationError にすると出る
     console.log(`error: ${JSON.stringify(error, null, 2)}`);
     // コンポーネントスタックは取れる
     console.log(`info: ${JSON.stringify(info, null, 2)}`);
