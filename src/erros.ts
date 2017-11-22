@@ -79,10 +79,33 @@
 // 所感
 // 参考を読みながらいろいろ試してたら以下がよさそう。
 // ただし、componentDidCatch の第一引数の error で stack が取れないのは謎。
+// export class ApplicationError implements Error {
+//   public name = "ApplicationError";
+//
+//   constructor(public message: string) {
+//     Error.captureStackTrace(this, this.constructor);
+//   }
+// }
+
+// 案５ スタックトレースを取れるように
+// 参考
+// A Guide to Proper Error Handling in JavaScript
+// https://www.sitepoint.com/proper-error-handling-javascript/
+// 結果
+// ・chrome コンソールでのエラー箇所表示：○(ErrorComponent.tsx:17)
+// ・スローされた例外にスタックトレースが含まれるか？：○
+// ・componentDidCatch の第一引数の error に正しく渡ってくるか？：○
+// 所感
+// バッチリ。componentDidCatch の第一引数の error でも stack が取れる。
+// 参考リンクのカスタムエラー SpecifiedError の例が参考になった。なるほど。
 export class ApplicationError implements Error {
   public name = "ApplicationError";
+  public stack = (new Error()).stack;
 
   constructor(public message: string) {
-    Error.captureStackTrace(this, this.constructor);
+  }
+
+  toString() {
+    return `${this.name}: ${this.message}`;
   }
 }
